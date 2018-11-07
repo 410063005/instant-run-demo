@@ -1,0 +1,1 @@
+include ':app', ':instant-run-annotations', ':instant-run-runtime', ':instant-run-common', ':instant-run-client', ':appclient', ':annotations'

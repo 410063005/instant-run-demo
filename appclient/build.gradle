@@ -1,0 +1,10 @@
+apply plugin: 'java'
+apply plugin: 'java-library'
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':instant-run-client')
+}
+
+sourceCompatibility = "6"
+targetCompatibility = "6"
