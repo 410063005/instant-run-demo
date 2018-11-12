@@ -11,6 +11,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        text.setText(Random().nextInt().toString() + "t2")
+        text.setText(Random().nextInt().toString() + " " + HelloWorld().sayHello())
     }
 }
