@@ -23,7 +23,7 @@ dependencies {
 //    compile 'com.google.android.tools:ddmlib:r13'
 
     // https://mvnrepository.com/artifact/com.android.tools.ddms/ddmlib
-    compile group: 'com.android.tools.ddms', name: 'ddmlib', version: '26.2.1'
+    compile 'com.android.tools.ddms:ddmlib:26.2.1'
     compile 'com.android.support:support-annotations:27.1.1'
     // testCompile libs.junit
 }
