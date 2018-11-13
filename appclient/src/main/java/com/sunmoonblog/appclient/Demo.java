@@ -5,6 +5,9 @@ import android.support.annotation.NonNull;
 import com.android.ddmlib.AndroidDebugBridge;
 import com.android.ddmlib.IDevice;
 import com.android.tools.ir.client.InstantRunClient;
+import com.android.tools.ir.client.UpdateMode;
+import com.android.tools.ir.runtime.ApplicationPatch;
+import com.android.tools.ir.runtime.Paths;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -138,6 +141,7 @@ public class Demo {
             System.out.println("==== [1]/[S] send message ====");
             System.out.println("==== [2]/[R] restart activity ====");
             System.out.println("==== [3]/[E] exit ====");
+            System.out.println("==== [4]/[P] put patches ====");
 
             System.out.print("请选择操作: ");
             String action = reader.readLine().trim();
@@ -147,10 +151,38 @@ public class Demo {
                 restartActivity(reader, target);
             } else if ("3".equals(action) || "e".equals(action) || "E".equals(action)) {
                 break;
+            } else if ("4".equals(action) || "p".equals(action) || "P".equals(action)) {
+                putPatches(reader, target);
             }
         }
 
         demo.finish();
+    }
+
+    private static void putPatches(BufferedReader reader, IDevice target) throws IOException {
+        long token;
+        while (true) {
+            try {
+                System.out.print("请输入app token(见build-info.xml文件): ");
+                token = Long.parseLong(reader.readLine().trim());
+                System.out.println("已输入app token: " + token);
+                break;
+            } catch (Exception e) {
+                // NO OP
+                e.printStackTrace();
+            }
+        }
+
+        InstantRunClient client = new InstantRunClient("com.sunmoonblog.instantrun_demo", new DummyLogger(), token);
+        List<ApplicationPatch> changes = new ArrayList<ApplicationPatch>();
+
+        // InstantRunClient.FileTransfer transfer = InstantRunClient.FileTransfer.createHotswapPatch()
+        byte[] data = DexMain.getDex();
+        ApplicationPatch patch = new ApplicationPatch(Paths.RELOAD_DEX_FILE_NAME, data);
+        changes.add(patch);
+
+        client.pushPatches(target, Long.toString(System.currentTimeMillis()), changes, UpdateMode.HOT_SWAP, false, true);
+
     }
 
     @NonNull

@@ -31,5 +31,5 @@ sourceCompatibility = "6"
 targetCompatibility = "6"
 
 shadowJar {
-    version = 0.2
+    version = 0.3
 }
